@@ -6,7 +6,6 @@ const cors = require('cors');
 const app = express();
 app.use(cors());
 
-// Get port from environment variable or use default
 const PORT = process.env.PORT || 3001;
 const SERVER_IP = process.env.SERVER_IP || '45.81.254.89:30120';
 
@@ -48,11 +47,12 @@ app.get('/api/status', async (req, res) => {
   }
 });
 
-// Health check endpoint for deployment platforms
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
 
 app.listen(PORT, () => {
   console.log(`API veikia per http://localhost:${PORT}`);
+  console.log(`Serverio IP: ${SERVER_IP}`);
+  console.log(`Pilnas adresas: http://localhost:${PORT}/api/status`);
 });
