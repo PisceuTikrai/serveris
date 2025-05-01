@@ -1,6 +1,6 @@
 // server.js
 const express = require('express');
-const FiveM = require('fivem-stats');
+const FiveM = require('./fivem-stats');
 const cors = require('cors');
 
 const app = express();
