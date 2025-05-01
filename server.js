@@ -1,17 +1,21 @@
 // server.js
 const express = require('express');
-const FiveM = require('./fivem-stats');
+const FiveM = require('./index');
 const cors = require('cors');
 
 const app = express();
 app.use(cors());
 
-const server = new FiveM.Stats('45.81.254.89:30120');
+// Get port from environment variable or use default
+const PORT = process.env.PORT || 3001;
+const SERVER_IP = process.env.SERVER_IP || '45.81.254.89:30120';
+
+const server = new FiveM.Stats(SERVER_IP);
 
 async function measurePing() {
   const start = Date.now();
   try {
-    await fetch(`http://45.81.254.89:30120/info.json`, {
+    await fetch(`http://${SERVER_IP}/info.json`, {
       method: 'GET',
       timeout: 1000
     });
@@ -44,6 +48,11 @@ app.get('/api/status', async (req, res) => {
   }
 });
 
-app.listen(3001, () => {
-  console.log('API veikia per http://localhost:3001');
+// Health check endpoint for deployment platforms
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
+
+app.listen(PORT, () => {
+  console.log(`API veikia per http://localhost:${PORT}`);
 });
